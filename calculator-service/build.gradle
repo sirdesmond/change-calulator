@@ -44,10 +44,12 @@ junitPlatform {
 
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'com.fasterxml.jackson.module:jackson-module-kotlin'
-    compile("org.springframework.boot:spring-boot-devtools")
+    compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.cloud:spring-cloud-starter-feign:1.2.2.RELEASE',
+            'com.fasterxml.jackson.module:jackson-module-kotlin',
+            "org.springframework.boot:spring-boot-devtools",
+            'com.jayway.restassured:rest-assured:2.9.0')
     testCompile("org.jetbrains.spek:spek-api:$spek_version",
             'com.natpryce:hamkrest:1.2.3.0'
     )
