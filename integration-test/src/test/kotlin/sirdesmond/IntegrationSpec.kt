@@ -2,11 +2,13 @@ package sirdesmond
 
 import com.jayway.restassured.RestAssured
 import com.jayway.restassured.RestAssured.given
+import com.jayway.restassured.http.ContentType
 import com.palantir.docker.compose.DockerComposeRule
 import com.palantir.docker.compose.connection.DockerPort
 import com.palantir.docker.compose.connection.waiting.HealthChecks.toRespondOverHttp
-import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.*
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -51,6 +53,29 @@ class IntegrationSpec {
                 .body("nickel", equalTo(0))
                 .body("penny", equalTo(0))
                 .statusCode(200)
+    }
+
+
+    @Test
+    fun `should return invalid error message when amount is  invalid`() {
+        given()
+                .When()
+                .contentType(ContentType.TEXT)
+                .get("/change/invalid")
+                .then()
+                .body(containsString("invalid amount provided!"))
+    }
+
+    @Test
+    fun `should fallback to default client when calculator service is down`() {
+        docker.dockerCompose().container("calculator-service").stop()
+
+        given()
+                .When()
+                .contentType(ContentType.JSON)
+                .get("/change/12.85")
+                .then()
+                .body(containsString("invalid amount provided!"))
     }
 
 
