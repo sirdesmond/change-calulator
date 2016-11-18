@@ -1,0 +1,30 @@
+### Intellij ###
+
+#
+/.idea/
+.idea/vcs.xml
+
+## File-based project format:
+*.iws
+
+## Plugin-specific files:
+
+# IntelliJ
+/out/
+
+### Intellij Patch ###
+# *.iml
+# modules.xml
+# .idea/misc.xml
+# *.ipr
+
+
+### Gradle ###
+.gradle
+/build/
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache

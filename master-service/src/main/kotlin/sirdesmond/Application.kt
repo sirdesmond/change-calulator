@@ -3,6 +3,7 @@ package sirdesmond
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cloud.netflix.feign.EnableFeignClients
 import org.springframework.context.annotation.Bean
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 
@@ -11,6 +12,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
  */
 
 @SpringBootApplication
+@EnableFeignClients
 open class Application {
 
     @Bean
