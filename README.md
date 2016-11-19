@@ -1,5 +1,15 @@
-# changecalculator implementation with spring cloud and docker
+# changecalculator implementation with kotlin, spring-cloud and docker
 
+
+##run from docker hub
+images have been pushed to docker hub
+you can simply run:
+```
+docker-compose up
+```
+visit [docker-machine-ip]:8082/change/[amount]
+
+###MANUALLY
 
 To build docker images for each individual service, `cd` into the service folder and run: 
 ```
@@ -34,3 +44,4 @@ DOCKER_CERT_PATH=/Users/kofikyei/.docker/machine/machines/default
 DOCKER_MACHINE_NAME=default
 ```
 run the `run-integration-tests.sh` script.
+
