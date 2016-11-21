@@ -7,6 +7,7 @@ import org.mockito.Mockito
 import sirdesmond.domain.Coin
 import sirdesmond.domain.Response
 import sirdesmond.services.CalculatorService
+import java.util.*
 
 /**
  * Created by kofikyei on 11/18/16.
@@ -27,7 +28,7 @@ class ControllerTest{
     fun `should return valid response when amount is valid`(){
         val expectedResponse = Response()
         Mockito.`when`(calcService.optimalChange(Mockito.anyDouble(),
-                Mockito.anySetOf(Coin::class.java))).thenReturn(expectedResponse)
+                Mockito.anySetOf(Coin::class.java))).thenReturn(Optional.of(expectedResponse))
         assertThat(controller.optimalChange("12") as Response,
                 equalTo(expectedResponse))
     }

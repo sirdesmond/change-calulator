@@ -1,13 +1,19 @@
 # changecalculator implementation with kotlin, spring-cloud and docker
 
+##Services
+![Services](services.png)
+
 
 ##run from docker hub
-images have been pushed to docker hub
+images have been pushed to docker hub.
+I use docker for mac on my local machine.
+If you use docker-machine, make sure you have a machine started up.
+
 you can simply run:
 ```
 docker-compose up
 ```
-visit [docker-machine-ip]:8082/change/[amount]
+visit [Localhost](http://localhost:8082/change/<amount>)
 
 ###MANUALLY
 
@@ -24,10 +30,11 @@ To start all the services from the command line, just run `docker-compose up`.
 To run all tests run the `run-all-tests.sh` script.
 
 ###URIs/Endpoints
-- [Master Service](http://192.168.99.100:8081/change/<amount>)
-- [Calculator Service](http://192.168.99.100:8082/optimalChange/<amount>)
+- [Calculator Service](http://localhost:8081/optimalChange/<amount>)
+- [Master Service](http://localhost:8082/change/<amount>)
 
-#Entry point in docker for debug. FYI I couldn't get this to work
+#Entry point in docker for debug. 
+FYI I couldn't get this to work
 ```
 "java","-Djava.security.egd=file:/dev/.urandom/","-Xdebug","-Xrunjdwp:server=y,transport=dt_socket,suspend=n","-jar","/app.jar"
 ```
@@ -35,13 +42,5 @@ To run all tests run the `run-all-tests.sh` script.
 ###For Integration Tests
 
 #Added the following to IDE configurations but they are exported when you run 
-`eval $(docker-machine env default)`
-
-```
-DOCKER_TLS_VERIFY=1
-DOCKER_HOST=tcp://192.168.99.100:2376
-DOCKER_CERT_PATH=/Users/kofikyei/.docker/machine/machines/default
-DOCKER_MACHINE_NAME=default
-```
 run the `run-integration-tests.sh` script.
 

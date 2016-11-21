@@ -18,6 +18,13 @@ import sirdesmond.services.toResponse
 class CalculatorServiceSpec : SubjectSpek<CalculatorService>({
     subject { CalculatorService() }
 
+
+
+    it("should not calculate change if amount is less than a penny"){
+
+        assertThat(subject.optimalChange(-1.00, allUSCoins).isPresent, equalTo(false))
+    }
+
     it("should be able to find coins for optimal solution"){
         val expectedResponse = mutableListOf<Coin>(
                 USCoin.SilverDollar, USCoin.SilverDollar, USCoin.SilverDollar,
@@ -26,7 +33,7 @@ class CalculatorServiceSpec : SubjectSpek<CalculatorService>({
                 USCoin.SilverDollar, USCoin.SilverDollar, USCoin.SilverDollar,
                 USCoin.HalfDollar, USCoin.Quarter, USCoin.Dime
         )
-        assertThat(subject.greedyFindCoins(15,12.85, allUSCoins), equalTo(expectedResponse))
+        assertThat(subject.greedilyFindCoins(12.85, allUSCoins), equalTo(expectedResponse))
     }
 
     it("should convert list of coins to response"){
@@ -47,14 +54,14 @@ class CalculatorServiceSpec : SubjectSpek<CalculatorService>({
                 penny = 0
         )
 
-        assertThat(coins.toResponse(), equalTo(expectedResponse))
+        assertThat(coins.toResponse().get(), equalTo(expectedResponse))
     }
 
     it("should return optimal change for whole dollars"){
         val expectedResponse = Response(
             silver_dollar = 10
         )
-        assertThat(subject.optimalChange(10.00, allUSCoins), equalTo(expectedResponse))
+        assertThat(subject.optimalChange(10.00, allUSCoins).get(), equalTo(expectedResponse))
     }
 
     it("should return optimal change for really small values"){
@@ -66,7 +73,7 @@ class CalculatorServiceSpec : SubjectSpek<CalculatorService>({
                 nickel = 0,
                 penny = 4
         )
-        assertThat(subject.optimalChange(0.99, allUSCoins), equalTo(expectedResponse))
+        assertThat(subject.optimalChange(0.99, allUSCoins).get(), equalTo(expectedResponse))
     }
 
     it("should return optimal change for simple fractions"){
@@ -78,7 +85,7 @@ class CalculatorServiceSpec : SubjectSpek<CalculatorService>({
                 nickel = 1,
                 penny = 1
         )
-        assertThat(subject.optimalChange(1.56, allUSCoins), equalTo(expectedResponse))
+        assertThat(subject.optimalChange(1.56, allUSCoins).get(), equalTo(expectedResponse))
     }
 
     it("should return optimal change for bigger fractions"){
@@ -90,7 +97,7 @@ class CalculatorServiceSpec : SubjectSpek<CalculatorService>({
                 nickel = 0,
                 penny = 0
         )
-        assertThat(subject.optimalChange(12.85, allUSCoins), equalTo(expectedResponse))
+        assertThat(subject.optimalChange(12.85, allUSCoins).get(), equalTo(expectedResponse))
     }
 
 })

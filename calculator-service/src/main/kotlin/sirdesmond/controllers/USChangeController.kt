@@ -17,7 +17,7 @@ class USChangeController @Autowired constructor(val calculatorService: Calculato
     @RequestMapping("/optimalChange/{amount:.+}")
     fun optimalChange(@PathVariable("amount") amount: String) : Any {
         return try{
-            calculatorService.optimalChange(amount.toDouble(), allUSCoins)
+            calculatorService.optimalChange(amount.toDouble(), allUSCoins).get()
         }catch (e: NumberFormatException){
             INVALID_AMOUNT
         }
