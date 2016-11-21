@@ -46,6 +46,7 @@ dependencies {
     testCompile("org.jetbrains.spek:spek-api:$spek_version",
             'com.natpryce:hamkrest:1.2.3.0',
             'junit:junit',
+            "org.jetbrains.kotlin:kotlin-test:$kotlin_version",
             'org.springframework.boot:spring-boot-starter-test',
             'com.github.tomakehurst:wiremock:1.18'
 

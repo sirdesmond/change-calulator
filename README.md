@@ -4,6 +4,9 @@
 ![Services](services.png)
 
 
+Clone the project
+
+
 ##run from docker hub
 images have been pushed to docker hub.
 I use docker for mac on my local machine.

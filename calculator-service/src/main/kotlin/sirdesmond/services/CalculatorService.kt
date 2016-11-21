@@ -13,57 +13,54 @@ import java.util.*
 @Component
 open class CalculatorService {
 
-    open fun optimalChange(amount: Double, coins: Set<Coin>): Optional<Response> =
-          if(amount<USCoin.Penny.value / 100) Optional.empty()
-             else greedilyFindCoins(amount, coins).toResponse()
+    open fun optimalChange(amount: Double, coins: Set<Int>): Optional<Response> =
+          Optional.of(dpMakeChange(amount, coins).toResponse())
 
-    /*this Dynamic Programming function can find minimum number of coins for all denominations
-    * couldn't get it to fetch actual coins used...deferring to greedy solution
-    * */
-    private fun makeChange(amount: Double, coins: Set<Coin>): List<Coin> {
-        fun universalfindNumberOfCoins(amount: Int, coins: Set<Coin>, index: Int, memo: MutableMap<String, Int>): Int {
-            if (amount == 0) {
-                return 0
-            }
-            val key = "$amount-$index"
-            if (memo.containsKey(key)) {
-                return memo[key] as Int
-            }
-            var min = Integer.MAX_VALUE
-            coins.mapIndexed { index, coin ->
-                if (coin.value <= amount) {
-                    val remaining = amount - coin.value
-                    val result = universalfindNumberOfCoins(remaining, coins, index, memo)
-                    if (result < min) {
-                        min = result
-                    }
-                }
-            }
-            min = if (min == Integer.MAX_VALUE) min else min + 1
-            memo.put(key, min)
-            return min
+
+    fun dpMakeChange(amount: Double, coins: Set<Int>) : List<Int>{
+        require(coins.size > 0, { "Coins cannot be empty" })
+
+        val sum: Int = amount.times(100).toInt()
+        if (sum == 0) return emptyList()
+        require(coins.any { it <= sum }, { "target too low" })
+
+        val usedCoins = mutableMapOf<Int, List<Int>?>(0 to emptyList<Int>())
+        for (target in 1..sum) {
+            usedCoins[target] = coins.filter { it <= target }
+                    .map { coin -> usedCoins[target - coin]?.let { it + listOf(coin) } ?: null }
+                    .filterNotNull()
+                    .minBy { it.size }
         }
-
-
-        val optimalNumberOfCoins: Int = universalfindNumberOfCoins(amount.times(100).toInt(), coins, 0, mutableMapOf())
-        return greedilyFindCoins(amount, coins).toList()
+        return (usedCoins[sum] ?: emptyList()).sorted()
     }
 
+    //greedy solution only works for coins like US denominations
+    //dp works now...retiring greedy
 
-    /*for time constraints, I used a greedy approach to find actual coins which will work for
-    * denominations like the US Coin
-    * */
-    fun greedilyFindCoins(amount: Double, coins: Set<Coin>): MutableList<Coin> {
-        fun doFind(amount: Int, coins: Set<Coin>, usedCoins: MutableList<Coin>): MutableList<Coin> {
+    fun greedilyFindCoins(amount: Double, coins: Set<Int>): MutableList<Int> {
+        fun doFind(amount: Int, coins: Set<Int>, usedCoins: MutableList<Int>): MutableList<Int> {
             if (amount == 0) return usedCoins
-            val newCoins = coins.filter { it.value <= amount }.sortedBy(Coin::value).reversed()
+            val newCoins = coins.filter { it <= amount }.sorted().reversed()
             usedCoins.add(newCoins.first())
-            doFind(amount - newCoins.first().value, newCoins.toHashSet(), usedCoins)
+            doFind(amount - newCoins.first(), newCoins.toHashSet(), usedCoins)
             return usedCoins
         }
 
         return doFind(amount.times(100).toInt(), coins, mutableListOf())
     }
+}
+
+fun List<Int>.toResponse():Response{
+    val groups: Map<Int, List<Int>> = this.groupBy { it}
+
+    return Response(
+            silver_dollar = groups.getOrElse(100,{ listOf()}).size ,
+            half_dollar = groups.getOrElse(50,{ listOf()}).size,
+            quarter = groups.getOrElse(25,{ listOf()}).size,
+            dime = groups.getOrElse(10,{ listOf()}).size,
+            nickel = groups.getOrElse(5,{ listOf()}).size,
+            penny = groups.getOrElse(1,{ listOf()}).size
+    )
 }
 
 fun List<Coin>.toResponse(): Optional<Response> {

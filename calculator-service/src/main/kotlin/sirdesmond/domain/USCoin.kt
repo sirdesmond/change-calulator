@@ -20,3 +20,7 @@ sealed class USCoin(value: Int) : Coin(value) {
 val allUSCoins = setOf<Coin>(USCoin.SilverDollar,
         USCoin.HalfDollar, USCoin.Quarter, USCoin.Dime,
         USCoin.Nickel, USCoin.Penny)
+
+val allUSCoinsValues = setOf<Int>(USCoin.SilverDollar.value,
+        USCoin.HalfDollar.value, USCoin.Quarter.value, USCoin.Dime.value,
+        USCoin.Nickel.value, USCoin.Penny.value)

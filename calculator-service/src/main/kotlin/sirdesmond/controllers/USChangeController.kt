@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import sirdesmond.domain.allUSCoins
+import sirdesmond.domain.allUSCoinsValues
 import sirdesmond.services.CalculatorService
 
 /**
@@ -17,7 +18,7 @@ class USChangeController @Autowired constructor(val calculatorService: Calculato
     @RequestMapping("/optimalChange/{amount:.+}")
     fun optimalChange(@PathVariable("amount") amount: String) : Any {
         return try{
-            calculatorService.optimalChange(amount.toDouble(), allUSCoins).get()
+            calculatorService.optimalChange(amount.toDouble(), allUSCoinsValues).get()
         }catch (e: NumberFormatException){
             INVALID_AMOUNT
         }

@@ -4,7 +4,6 @@ import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.Test
 import org.mockito.Mockito
-import sirdesmond.domain.Coin
 import sirdesmond.domain.Response
 import sirdesmond.services.CalculatorService
 import java.util.*
@@ -28,7 +27,7 @@ class ControllerTest{
     fun `should return valid response when amount is valid`(){
         val expectedResponse = Response()
         Mockito.`when`(calcService.optimalChange(Mockito.anyDouble(),
-                Mockito.anySetOf(Coin::class.java))).thenReturn(Optional.of(expectedResponse))
+                Mockito.anySetOf(Int::class.java))).thenReturn(Optional.of(expectedResponse))
         assertThat(controller.optimalChange("12") as Response,
                 equalTo(expectedResponse))
     }
